@@ -10,6 +10,11 @@ Get a three-zone workspace running in under a minute.
 
 This creates `~/Sandbox/` with three empty zones and a valid manifest.
 
+> **💡 LOOM Integration:** Projects in `Internal_SandBox/` can have `.loom/` directories
+> tracked by [🝪 LOOM](https://github.com/ObsidianArchives/LOOM). These stay in Zone 1 —
+> they're automatically excluded when syncing to Zone 2+3. Never gitignore `.loom/` in Zone 1.
+> See [examples/minimal-sandbox/](examples/minimal-sandbox/) for a working demo.
+
 ## 2. Register Your Project
 
 ```bash

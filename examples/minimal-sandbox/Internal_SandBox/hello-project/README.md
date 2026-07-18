@@ -3,6 +3,10 @@
 A minimal project demonstrating the ⌘ Sandbox + 🝪 LOOM workflow.
 
 ## What's Here
+> **Note:** `.loom/loom.json` is excluded from public repos by sandbox protocol.
+> In a real project, LOOM's tracker lives here. Clone [LOOM](https://github.com/ObsidianArchives/LOOM)
+> and run `render.py --input <path> --header` to see project status.
+
 
 - `.loom/loom.json` — tracked by LOOM (3 items)
 - `scripts/hello.sh` — this project's own tooling

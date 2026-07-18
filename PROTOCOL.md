@@ -20,6 +20,7 @@ ZONE 3: ~/git_live/          Public-facing repos · GitHub remotes · tagged rel
 - **Git:** Full history. Free commits. No sanitization needed.
 - **Naming convention:** `<project-name>-internal/` for protocols, `<Project_Name>/` for applications.
 - **Contains:** `.loom/` tracker, `forge/` artifacts, `drafts/`, `archives/`, full `node_modules/` if needed.
+- **.loom/ rule:** `.loom/` is WELCOME here. Git-track it. Never gitignore it. This is where 🝪 LOOM lives and operates. It is excluded from Zone 2+3 by rsync, not by .gitignore.
 
 ### Zone 2 — git_sandbox
 
