@@ -70,6 +70,7 @@ See [QUICKSTART.md](QUICKSTART.md) for the full walkthrough with what's happenin
 | File | Purpose |
 |------|---------|
 | `PROTOCOL.md` | Full specification — zones, lifecycle, schema, rsync pipeline |
+| `examples/minimal-sandbox/` | Working demo: sandbox project with LOOM tracking and own tooling |
 | `QUICKSTART.md` | 3-command onboarding |
 | `SKILL.md` | Hermes AI operational knowledge |
 | `index.schema.json` | JSON Schema for manifest validation |

@@ -206,6 +206,53 @@ cd git_sandbox/<project> && git add -A && git commit -m "sync: <description>"
 cd ~/git_live/<project> && git add -A && git commit -m "sync: <description>"
 ```
 
+## 6b. First Release Workflow
+
+When publishing a project for the FIRST time to GitHub, Zone 2 and Zone 3 need
+fresh git history to ensure internal-only files (`.loom/`, `drafts/`, `archives/`)
+don't leak through git history into public repos.
+
+### Why Fresh Git History?
+
+The rsync `--exclude .loom/` flag prevents NEW copies, but if `.loom/` was ever
+committed to git in Zone 2 or 3, those files persist in git history forever.
+Every `git clone` retrieves them. See §2.1 for the full pitfall explanation.
+
+### First-Release Procedure
+
+```
+1. BUILD in Zone 1 (internal) — all files, full data
+2. SANITIZE — copy to /tmp, strip PII, genericize operator references
+3. STAGE to Zone 2 — rsync sanitized copy, git init --orphan, single clean commit
+4. PULL to Zone 3 — rsync from Zone 2, git init if needed, set GitHub remote
+5. PUSH to GitHub — git push --force from Zone 3
+```
+
+### Ongoing Sync (After First Release)
+
+After the first release, Zone 2 and Zone 3 have clean git history. Regular sync:
+```
+Zone 1 → rsync → Zone 2 → git commit → rsync → Zone 3 → git commit → git push
+```
+
+### Sanitization Checklist
+
+Before the first release, verify the public copy:
+- [ ] No `.loom/` directory in Zone 2 or Zone 3
+- [ ] No operator-specific paths (`~/Sandbox_v2`, `Internal_SandBox`)
+- [ ] No operator names in LICENSE or documentation
+- [ ] No real project names in example code or docs
+- [ ] `master_loom.json` has example/hello-world projects only
+- [ ] Git history is single orphan commit (not inherited from Zone 1)
+- [ ] GitHub remote is set on Zone 3
+
+### Prerequisites
+
+- `gh` CLI authenticated (`gh auth login`) or Git PAT configured
+- Zone 1 source committed and validated
+- `validate.py --check-paths` passes
+
+
 ## 7. Project Lifecycle
 
 ```

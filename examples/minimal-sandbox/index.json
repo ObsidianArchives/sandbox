@@ -1,0 +1,34 @@
+{
+  "sandbox": "MinimalSandbox",
+  "sigil": "\u2318",
+  "version": "v2",
+  "created": "2026-07-19",
+  "updated": "2026-07-19T00:00:00Z",
+  "tools": [],
+  "projects": [],
+  "content_repos": [],
+  "environments": [
+    {
+      "name": "Internal_SandBox",
+      "purpose": "Working copies \u00b7 full data \u00b7 daily dev",
+      "projects": [
+        {
+          "name": "hello-project",
+          "type": "tool",
+          "internal_path": "Internal_SandBox/hello-project",
+          "sandbox_path": "git_sandbox/hello-project",
+          "live_path": "~/git_live/hello-project",
+          "version": "v0.1.0-dev",
+          "status": "active",
+          "loom_id": "hello-world",
+          "description": "A minimal sandbox project. Tracked by LOOM. Synced by sandbox."
+        }
+      ]
+    },
+    {
+      "name": "git_sandbox",
+      "purpose": "Clean deploy copies \u00b7 tagged versions",
+      "projects": []
+    }
+  ]
+}
