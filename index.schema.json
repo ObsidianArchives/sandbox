@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/mercury/sandbox/index.schema.json",
+  "title": "Sandbox Index Manifest",
+  "description": "Schema for Sandbox protocol index.json — tracks all tools, projects, and content repos across three zones.",
+  "type": "object",
+  "required": ["sandbox", "version", "created", "updated", "environments"],
+  "properties": {
+    "sandbox": {
+      "type": "string",
+      "description": "Instance name (e.g. 'Sandbox_v2')"
+    },
+    "sigil": {
+      "type": "string",
+      "description": "Visual identifier (e.g. '⌘')"
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version (v1 or v2)"
+    },
+    "created": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date when the sandbox was created"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO datetime of last update"
+    },
+    "tools": {
+      "type": "array",
+      "description": "Registered binary applications (AppImages, scripts, standalone binaries)",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "path", "version", "installed"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "enum": ["appimage", "script", "binary"] },
+          "path": { "type": "string" },
+          "version": { "type": "string" },
+          "size_mb": { "type": "number" },
+          "source_url": { "type": "string", "format": "uri" },
+          "installed": { "type": "string", "format": "date" },
+          "platform": { "type": "string" },
+          "runtime": { "type": "array", "items": { "type": "string" } },
+          "produces": { "type": "array", "items": { "type": "string" } },
+          "status": { "enum": ["active", "archived"] }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Git-tracked projects in the sandbox",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "internal_path", "version", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "type": { "enum": ["tool", "os", "docs"] },
+          "internal_path": { "type": "string" },
+          "sandbox_path": { "type": "string" },
+          "live_path": { "type": "string" },
+          "version": { "type": "string" },
+          "status": { "enum": ["active", "complete", "deferred", "blocked", "archived"] },
+          "health": { "enum": ["healthy", "behind", "early", "blocked", "dormant"] },
+          "loom_id": { "type": "string" },
+          "git_remote": { "type": "string" },
+          "description": { "type": "string" },
+          "tags": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "content_repos": {
+      "type": "array",
+      "description": "Non-code artifact repositories (canvases, designs, visual content)",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "format", "internal_path", "status"],
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "enum": ["visual-content", "design", "docs"] },
+          "format": { "type": "string", "description": "Primary file format (tldr+json, png, svg, md)" },
+          "internal_path": { "type": "string" },
+          "sandbox_path": { "type": "string" },
+          "live_path": { "type": "string" },
+          "version": { "type": "string" },
+          "files": { "type": "integer" },
+          "status": { "enum": ["active", "complete", "deferred", "archived"] },
+          "loom_id": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "environments": {
+      "type": "array",
+      "description": "Zone definitions",
+      "items": {
+        "type": "object",
+        "required": ["name", "purpose"],
+        "properties": {
+          "name": { "type": "string" },
+          "purpose": { "type": "string" }
+        }
+      }
+    }
+  }
+}
