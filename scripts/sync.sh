@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ⌘ Sandbox Sync — rsync pipeline: Internal → Sandbox → Live
+# ⌘ Sandbox Sync v1.0.0 — rsync pipeline: Internal → Sandbox → Live
 # Usage: ./sync.sh <project> [--zone1-to-2|--zone2-to-3|--push|--all]
 # Default: --all (sync through all zones, commit, but don't push)
 

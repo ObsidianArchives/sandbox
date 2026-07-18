@@ -117,4 +117,4 @@ cd ~/git_live/my-project && git add -A && git commit -m "sync: my-project"
 - Read [PROTOCOL.md](PROTOCOL.md) for the full specification
 - Run `./status.py` regularly to check zone health
 - Run `./validate.py --check-paths --check-tags` before shipping
-- See [LOOM](https://github.com/obsidianarchives/loom) for project tracking
+- See [LOOM](https://github.com/ObsidianArchives/LOOM) for project tracking

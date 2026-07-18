@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""⌘ Sandbox Validate — validate index.json against index.schema.json
+"""⌘ Sandbox Validate v1.0.0 — validate index.json against index.schema.json
 
 Usage:
     python3 validate.py [--check-paths] [--verbose]

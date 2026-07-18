@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""⌘ Sandbox Status v1.0.0 — zone health dashboard."""
 """⌘ Sandbox Status — zone health dashboard
 
 Reads index.json, checks filesystem and git state, reports per-project health.

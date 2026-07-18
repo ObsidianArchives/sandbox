@@ -29,6 +29,30 @@ ZONE 3: ~/git_live/          Public-facing repos · GitHub remotes · tagged rel
 - **Sanitization:** Gitignored files are naturally excluded by rsync. Additional content sanitization (stripping private paths, generic council seats) applied after sync if project is public-facing.
 - **Naming:** `<project-name>/` (no `-internal` suffix).
 
+
+### 2.1 Critical Pitfall: Git History vs rsync Exclusion
+
+**rsync `--exclude .loom/` only affects NEW syncs. It does NOT remove `.loom/` from existing git history.**
+
+If `.loom/` was ever committed to a zone's git repository before the exclusion
+was added, those files persist in git history indefinitely. Every `git clone`
+will retrieve them. Every `git log` will show them.
+
+**Detection:** Check if `.loom/` is tracked in git history:
+```bash
+git log --all --full-history -- .loom/
+```
+
+**Fix:** Two options:
+1. **Orphan branch** (preferred): `git checkout --orphan main && git add -A && git commit -m "fresh start"`
+   Removes all history. Cleanest. Use for public releases.
+2. **Filter-branch**: `git filter-branch --index-filter 'git rm --cached -r --ignore-unmatch .loom/' HEAD`
+   Preserves other history but surgically removes `.loom/`. Fragile.
+
+**Prevention:** Always exclude `.loom/` in the initial zone setup. Never commit it
+to zone 2 or 3. The rsync exclude is a belt; the git history is the suspenders.
+Both must be correct.
+
 ### Zone 3 — git_live
 
 - **Purpose:** The public face. What the world sees on GitHub.
@@ -45,7 +69,7 @@ The manifest lives at the sandbox root (`~/Sandbox/index.json`). It is the singl
 > **⚠️ Version Note (v1.0):** The current `index.json` uses a nested schema
 > where projects are listed under `environments[].projects[]`. The flat
 > `projects[]` array with per-project zone paths (shown below) is the
-> **v1.2 roadmap** — aspirational, not yet implemented. See §11 for the
+> **v1.2 roadmap** — planned. v1.0 shipped 2026-07-19. v1.1 tooling built. See §11 for the
 > migration plan. Both schemas are valid; v1.0 ships the nested form.
 
 ```json
@@ -54,7 +78,7 @@ The manifest lives at the sandbox root (`~/Sandbox/index.json`). It is the singl
   "sigil": "⌘",
   "version": "v2",
   "created": "2026-07-06",
-  "updated": "2026-07-18",
+  "updated": "2026-07-19",
 
   "tools": [
     {
@@ -287,7 +311,7 @@ Validates `index.json` against `index.schema.json` with optional filesystem chec
 `--check-tags` verifies git tag consistency across Zone 2 and Zone 3.
 Exit code 1 on schema errors. Warnings don't block.
 
-### 11.6 CLI Contract (Future — v1.2)
+### 11.6 CLI Contract (Planned — v1.2)
 
 These scripts are designed to be wrapped by a unified `sandbox` CLI in a future version:
 

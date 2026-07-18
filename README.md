@@ -1,4 +1,6 @@
-# ⌘ Sandbox — Three-Zone Workspace Protocol
+# ⌘ Sandbox v1.0.0 — Three-Zone Workspace Protocol
+
+> **v1.0.0** · shipped 2026-07-19 · [MIT](LICENSE) · [github.com/ObsidianArchives/sandbox-protocol](https://github.com/ObsidianArchives/sandbox-protocol)
 
 ```
 Build in internal. Stage to sandbox. Ship from live.
@@ -41,8 +43,8 @@ A single JSON file at the sandbox root tracks everything:
 | Type | Example | Git-tracked | Ships to public |
 |------|---------|-------------|-----------------|
 | `tool` | LOOM, arca, Sandbox itself | Yes | Yes (GitHub) |
-| `os` | Apollon_OS | Yes | Optional |
-| `docs` | ObsidianBlogs, StarMind | Yes | Yes (ICP/GitHub) |
+| `os` | ExampleOS | Yes | Optional |
+| `docs` | ExampleBlog, ExampleDocs | Yes | Yes (ICP/GitHub) |
 | `visual-content` | tldraw canvases | Yes | Optional |
 
 ## Quick Example
@@ -79,7 +81,7 @@ See [QUICKSTART.md](QUICKSTART.md) for the full walkthrough with what's happenin
 
 ## Protocol Suite
 
-Sandbox is part of Mercury's protocol suite:
+Sandbox is part of the protocol suite:
 
 | Protocol | Purpose |
 |----------|---------|

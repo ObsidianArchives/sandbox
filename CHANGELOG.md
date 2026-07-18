@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.0.0 — Public Release (2026-07-19)
+
+### Shipped
+- Full protocol specification (PROTOCOL.md)
+- Public landing page (README.md)
+- Quickstart guide (QUICKSTART.md)
+- Automated sync pipeline (scripts/sync.sh)
+- Zone health dashboard (scripts/status.py)
+- Manifest validation (scripts/validate.py)
+- Zone bootstrap (scripts/sandbox-init.sh)
+- Project registration (scripts/sandbox-register.py)
+- V2 migration tool (scripts/migrate-v2.py)
+- JSON Schema (index.schema.json)
+- AI operational knowledge (SKILL.md)
+- MIT License with ObsidianArchives attribution
+
+### Pipeline
+- Internal → git_sandbox (fresh orphan, no .loom/ leakage)
+- git_sandbox → git_live (clean copy)
+- git_live → GitHub (ObsidianArchives/sandbox-protocol)
+- Tagged: v1.0.0
+
+### Discovered During Release
+- Git history retains .loom/ even after rsync exclusion → PROTOCOL.md §2.1
+- sync.sh --tag/--sanitize implemented but not yet dogfooded in production
+- Sandbox index.json needs automated freshness validation
+- GitHub auth must be documented as protocol prerequisite
+
 ## v1.1.0 (2026-07-18)
 
 ### Added
