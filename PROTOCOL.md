@@ -26,8 +26,8 @@ ZONE 3: ~/git_live/          Public-facing repos · GitHub remotes · tagged rel
 
 - **Purpose:** Clean deploy copies. Ready for tagging and release.
 - **Git:** Clean history. Tagged versions only (v1.0.0, v1.1.0, etc.).
-- **Sync:** `rsync -av --delete` from Zone 1, excluding `.git/`, `.icp/`, `node_modules/`, `drafts/`.
-- **Sanitization:** Gitignored files are naturally excluded by rsync. Additional content sanitization (stripping private paths, generic council seats) applied after sync if project is public-facing.
+- **Sync:** `rsync -av --delete` from Zone 1. Excludes are defined in `scripts/sync.sh` — broadly: version control internals, build artifacts, tracker data, and project-specific internal directories.
+- **Sanitization:** After sync, verify no internal artifacts remain. See §6b Sanitization Checklist and §12.3 for guidance.
 - **Naming:** `<project-name>/` (no `-internal` suffix).
 
 
@@ -213,6 +213,10 @@ rsync -av --delete \
   Internal_SandBox/<project>/ git_sandbox/<project>/
 ```
 
+> **Note:** The canonical exclude list lives in `scripts/sync.sh`. Add
+> project-specific excludes there. The protocol documents the principle;
+> the script is the authority.
+
 ### Sandbox → Live
 
 ```bash
@@ -259,12 +263,15 @@ Zone 1 → rsync → Zone 2 → git commit → rsync → Zone 3 → git commit �
 
 ### Sanitization Checklist
 
-Before the first release, verify the public copy:
-- [ ] No `.loom/` directory in Zone 2 or Zone 3
-- [ ] No operator-specific paths (`~/Sandbox_v2`, `Internal_SandBox`)
+Before the first release, verify the public copy contains only what should ship:
+
+- [ ] No tracker data (`.loom/`, `.hermes/`)
+- [ ] No session notes, drafts, or archives
+- [ ] No build artifacts (`__pycache__/`, `node_modules/`)
+- [ ] No internal development artifacts (project-specific — audit your own)
+- [ ] No operator-specific paths (`/home/<user>/`, instance names)
 - [ ] No operator names in LICENSE or documentation
-- [ ] No real project names in example code or docs
-- [ ] `master_loom.json` has example/hello-world projects only
+- [ ] Example data only — no real project names, paths, or metrics
 - [ ] Git history is single orphan commit (not inherited from Zone 1)
 - [ ] GitHub remote is set on Zone 3
 
@@ -422,7 +429,25 @@ Projects accumulate research material — PDFs, screenshots, competitor analysis
 
 ### 12.3 Sync Excludes
 
-Both `.archive/` and `references/` are added to the rsync exclude list. They exist only in Zone 1 — never staged or shipped.
+The canonical exclude list is defined in `scripts/sync.sh`. The principle is
+simple: everything in Zone 2+3 should be ready to ship to the public.
+Internal-only directories (tracker data, drafts, archives, build artifacts,
+session notes, and project-specific internal directories) are excluded by rsync
+and exist only in Zone 1.
+
+**Rule of thumb:** If it contains operator identity, real project data, session
+logs, or internal development artifacts that aren't part of the shipped tool,
+it should be excluded. When in doubt, add it to `sync.sh`'s `RSYNC_EXCLUDES`
+array and verify Zone 2 is clean before proceeding to Zone 3.
+
+**The most common leak vector:** internal artifacts hiding inside otherwise
+public-facing directories. Tracker data in a hidden folder is easy — the
+excludes catch it. But development logs in `docs/`, internal configs in
+`forge/`, or session notes in a tools directory slip through because the
+parent directory is meant to ship. After every sync, list Zone 2's directory
+tree and ask of each directory: "Does this contain ONLY what the public
+should see?" If a directory mixes public and internal content, either
+restructure it or add a finer-grained exclude pattern.
 
 ## 13. Multi-Machine Sync
 
