@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""⌘ Sandbox Validate v1.0.0 — validate index.json against index.schema.json
+"""⌘ Sandbox Validate v1.1.0 — validate index.json against index.schema.json
 
 Usage:
-    python3 validate.py [--check-paths] [--verbose]
+    python3 validate.py [--check-paths] [--check-tags] [--check-zones] [--verbose]
 
 Options:
     --check-paths   Also verify that registered projects exist on disk
+    --check-tags    Verify git tag consistency across Zone 2 and Zone 3
+    --check-zones   Verify Zone 2 and Zone 3 directories exist
     --verbose       Show all validation details
     --quiet         Only output on errors (exit code 1 if invalid)
 """
@@ -17,7 +19,7 @@ import sys
 from pathlib import Path
 
 # ── Paths ──
-SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox_v2")))
+SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox")))
 INDEX_PATH = SAND_ROOT / "index.json"
 SCHEMA_PATH = Path(__file__).resolve().parent.parent / "index.schema.json"
 
@@ -175,9 +177,35 @@ def _git_tags(repo: Path) -> list[str]:
         return []
 
 
+def check_zones(data: dict) -> list[str]:
+    """Verify Zone 2 and Zone 3 directories exist for each project."""
+    warnings = []
+    LIVE_ROOT = Path(os.environ.get("LIVE_ROOT", os.path.expanduser("~/git_live")))
+
+    for env in data.get("environments", []):
+        for proj in env.get("projects", []):
+            name = proj.get("name", "unnamed")
+            base = name
+            for suffix in ("-internal", "_internal", "_git"):
+                if base.endswith(suffix):
+                    base = base[:-len(suffix)]
+                    break
+
+            z2_path = SAND_ROOT / "git_sandbox" / base
+            z3_path = LIVE_ROOT / base
+
+            if not z2_path.is_dir():
+                warnings.append(f"Zones: '{name}' — Zone 2 missing: {z2_path}")
+            if not z3_path.is_dir():
+                warnings.append(f"Zones: '{name}' — Zone 3 missing: {z3_path}")
+
+    return warnings
+
+
 def main():
     check_paths_flag = "--check-paths" in sys.argv
     check_tags_flag = "--check-tags" in sys.argv
+    check_zones_flag = "--check-zones" in sys.argv
     verbose = "--verbose" in sys.argv
     quiet = "--quiet" in sys.argv
 
@@ -204,9 +232,10 @@ def main():
 
     warnings = check_paths(data) if check_paths_flag else []
     tag_warnings = check_tags(data) if check_tags_flag else []
+    zone_warnings = check_zones(data) if check_zones_flag else []
 
     # Merge warnings for reporting
-    all_warnings = warnings + tag_warnings
+    all_warnings = warnings + tag_warnings + zone_warnings
 
     # Report
     if not quiet:
@@ -240,6 +269,8 @@ def main():
             print(f"  Content repos: {repos}")
             if check_paths_flag:
                 print(f"  All paths exist on disk")
+            if check_zones_flag:
+                print(f"  All zones exist on disk")
 
     if errors:
         sys.exit(1)

@@ -10,6 +10,22 @@ Get a three-zone workspace running in under a minute.
 
 This creates `~/Sandbox/` with three empty zones and a valid manifest.
 
+To also prepare the public-facing Zone 3 directory:
+```bash
+./sandbox-init.sh --with-live
+```
+
+### Configuration
+
+Set these environment variables (add to `~/.bashrc` for persistence):
+
+```bash
+export SAND_ROOT=~/Sandbox        # where your sandbox lives
+export LIVE_ROOT=~/git_live       # where public repos live (Zone 3)
+```
+
+If unset, scripts default to `~/Sandbox/` and `~/git_live/` respectively.
+
 > **💡 LOOM Integration:** Projects in `Internal_SandBox/` can have `.loom/` directories
 > tracked by [🝪 LOOM](https://github.com/ObsidianArchives/LOOM). These stay in Zone 1 —
 > they're automatically excluded when syncing to Zone 2+3. Never gitignore `.loom/` in Zone 1.
@@ -29,11 +45,17 @@ Your project directory must already exist inside `Internal_SandBox/`. The script
 
 ## 3. Sync Through All Zones
 
+First time (sets up Zone 3 git + GitHub remote):
+```bash
+./sync.sh my-project-internal --first-release --remote https://github.com/you/my-project.git --all
+```
+
+After first release (routine sync):
 ```bash
 ./sync.sh my-project-internal --all
 ```
 
-This runs the full pipeline: Internal → Sandbox → Live → GitHub (if remote is set).
+This runs the full pipeline: Internal → Sandbox → Live → GitHub.
 
 ## 4. Check Health
 

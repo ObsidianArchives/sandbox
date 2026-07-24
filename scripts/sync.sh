@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-SAND_ROOT="${SAND_ROOT:-$HOME/Sandbox_v2}"
+SAND_ROOT="${SAND_ROOT:-$HOME/Sandbox}"
 LIVE_ROOT="${LIVE_ROOT:-$HOME/git_live}"
 
 # ── Exclude patterns for Zone 1 → Zone 2 ──
@@ -47,6 +47,8 @@ FLAGS:
   --tag           Auto-tag after sync (reads version from index.json)
   --tag-version X  Use specific version string for the tag
   --sanitize       Run project's sanitize.sh hook after rsync
+  --remote URL     Set git remote origin for Zone 3 (first-time setup)
+  --first-release  Use orphan branch for clean git history (per §6b)
   --dry-run       Show what would happen without doing it
   --no-commit     Skip git commit after rsync
 
@@ -67,6 +69,8 @@ NO_COMMIT=false
 TAG_MODE=false
 TAG_VERSION=""
 SANITIZE_MODE=false
+REMOTE_URL=""
+FIRST_RELEASE=false
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -80,6 +84,8 @@ while [[ $# -gt 0 ]]; do
         --tag) TAG_MODE=true; shift ;;
         --tag-version) TAG_VERSION="$2"; shift 2 ;;
         --sanitize) SANITIZE_MODE=true; shift ;;
+        --remote) REMOTE_URL="$2"; shift 2 ;;
+        --first-release) FIRST_RELEASE=true; shift ;;
         *) PROJECT="$1"; shift ;;
     esac
 done
@@ -172,9 +178,26 @@ sync_and_commit() {
     if [[ ! -d "$dst" ]]; then
         log "Creating $dst"
         $DRY_RUN || mkdir -p "$dst"
-        if [[ ! -d "$dst/.git" ]]; then
-            log "Initializing git in $dst"
-            $DRY_RUN || git -C "$dst" init --quiet
+    fi
+    if [[ ! -d "$dst/.git" ]]; then
+        log "Initializing git in $dst"
+        $DRY_RUN || git -C "$dst" init --quiet
+        # First release: use orphan branch for clean history (§6b)
+        if $FIRST_RELEASE && [[ "$label" == "Zone 3" ]]; then
+            log "First release: creating orphan branch (clean history per §6b)"
+            $DRY_RUN || git -C "$dst" checkout --orphan main
+        fi
+    fi
+
+    # Set remote if provided (first-time Zone 3 setup)
+    if [[ -n "$REMOTE_URL" ]] && [[ "$label" == "Zone 3" ]]; then
+        local existing_remote
+        existing_remote=$(git -C "$dst" remote get-url origin 2>/dev/null || echo "")
+        if [[ -z "$existing_remote" ]]; then
+            log "Setting remote origin: $REMOTE_URL"
+            $DRY_RUN || git -C "$dst" remote add origin "$REMOTE_URL"
+        else
+            log "Remote already set: $existing_remote"
         fi
     fi
 

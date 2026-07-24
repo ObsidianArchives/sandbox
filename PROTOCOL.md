@@ -1,4 +1,4 @@
-# ⌘ Sandbox Protocol Specification v1.0
+# ⌘ Sandbox Protocol Specification v1.1.0
 
 ## 1. Overview
 
@@ -65,21 +65,42 @@ Both must be correct.
 
 The manifest lives at the sandbox root (`~/Sandbox/index.json`). It is the single source of truth for what exists, where it lives, and what state it's in.
 
-### Schema v2
+### Schema (current — v1 nested format)
 
-> **⚠️ Version Note (v1.0):** The current `index.json` uses a nested schema
-> where projects are listed under `environments[].projects[]`. The flat
-> `projects[]` array with per-project zone paths (shown below) is the
-> **v1.2 roadmap** — planned. v1.0 shipped 2026-07-19. v1.1 tooling built. See §11 for the
-> migration plan. Both schemas are valid; v1.0 ships the nested form.
+> **The current format uses `environments[].projects[]`.** The flat
+> `projects[]` array (shown below in §3.1) is the **v2 roadmap** — not yet shipped.
 
 ```json
 {
-  "sandbox": "Sandbox_v2",
+  "environments": [
+    {
+      "name": "Internal_SandBox",
+      "projects": [
+        {
+          "name": "my-project-internal",
+          "type": "tool",
+          "path": "Internal_SandBox/my-project-internal",
+          "version": "v0-dev",
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Schema (planned — v2 flat format)
+
+> **Roadmap.** The flat `projects[]` array with per-project zone paths
+> replaces the nested format. Migration script: `scripts/migrate-v2.py`.
+
+```json
+{
+  "sandbox": "Sandbox",
   "sigil": "⌘",
   "version": "v2",
   "created": "2026-07-06",
-  "updated": "2026-07-19",
+  "updated": "2026-07-24",
 
   "tools": [
     {

@@ -13,7 +13,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox_v2")))
+SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox")))
 LIVE_ROOT = Path(os.environ.get("LIVE_ROOT", os.path.expanduser("~/git_live")))
 INDEX_PATH = SAND_ROOT / "index.json"
 
@@ -129,7 +129,7 @@ def print_table(results, args):
     # strip ANSI for width calc
     hdr = f"{'PROJECT':<24} {'Z1':<4} {'Z2':<4} {'Z3':<4} {'DRIFT':<7} {'TAGS':<12} {'REMOTE':<10}"
     sep = "─" * 72
-    sandbox = "Sandbox_v2"
+    sandbox = "Sandbox"
     try:
         with open(INDEX_PATH) as f: sandbox = json.load(f).get("sandbox", sandbox)
     except: pass
@@ -164,7 +164,7 @@ def print_table(results, args):
 
 
 def print_json(results):
-    out = {"sandbox":"Sandbox_v2","checked_at":datetime.now(timezone.utc).isoformat(),"projects":[],"summary":{}}
+    out = {"sandbox":"Sandbox","checked_at":datetime.now(timezone.utc).isoformat(),"projects":[],"summary":{}}
     for r in results:
         out["projects"].append({"name":r["name"],"zones":{"z1":r["z1"],"z2":r["z2"],"z3":r["z3"]},"drift_days":r.get("drift"),"tags":r["tags_label"],"remote":r["remote"],"health":r["health"]})
     cnt = {}; [cnt.update({r['health']:cnt.get(r['health'],0)+1}) for r in results]
