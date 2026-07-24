@@ -9,7 +9,6 @@ NC='\033[0m'
 
 NAME="Sandbox"
 PARENT="$HOME"
-WITH_LIVE=false
 
 usage() {
     cat <<EOF
@@ -20,7 +19,6 @@ Usage: ./sandbox-init.sh [--name <name>] [--path <path>]
   --name   Sandbox instance name (default: "Sandbox")
   --path   Parent directory (default: \$HOME)
            Sandbox is created at <path>/<name>/
-  --with-live  Also create ~/git_live/ directory for Zone 3
 
 EOF
     exit 0
@@ -31,7 +29,6 @@ while [[ $# -gt 0 ]]; do
         --help|-h) usage ;;
         --name) NAME="$2"; shift 2 ;;
         --path) PARENT="$2"; shift 2 ;;
-        --with-live) WITH_LIVE=true; shift ;;
         *) echo "Unknown: $1"; usage ;;
     esac
 done
@@ -101,11 +98,9 @@ else
 fi
 
 # ── Create Zone 3 (live) ──
-if $WITH_LIVE; then
-    LIVE_ROOT="${LIVE_ROOT:-$HOME/git_live}"
-    mkdir -p "$LIVE_ROOT"
-    echo -e "${GREEN}✓${NC} Zone 3 directory created at $LIVE_ROOT"
-fi
+LIVE_ROOT="${LIVE_ROOT:-$HOME/git_live}"
+mkdir -p "$LIVE_ROOT"
+echo -e "${GREEN}✓${NC} Zone 3 directory created at $LIVE_ROOT"
 
 # ── Validate ──
 VALIDATE_PY="$(dirname "$0")/validate.py"
