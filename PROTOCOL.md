@@ -429,25 +429,13 @@ Projects accumulate research material — PDFs, screenshots, competitor analysis
 
 ### 12.3 Sync Excludes
 
-The canonical exclude list is defined in `scripts/sync.sh`. The principle is
-simple: everything in Zone 2+3 should be ready to ship to the public.
-Internal-only directories (tracker data, drafts, archives, build artifacts,
-session notes, and project-specific internal directories) are excluded by rsync
-and exist only in Zone 1.
+The canonical exclude list is defined in `scripts/sync.sh`. The principle is simple: everything in Zone 2+3 should be ready to ship to the public. Internal-only directories (tracker data, drafts, archives, build artifacts, session notes, and project-specific internal directories) are excluded by rsync and exist only in Zone 1.
 
-**Rule of thumb:** If it contains operator identity, real project data, session
-logs, or internal development artifacts that aren't part of the shipped tool,
-it should be excluded. When in doubt, add it to `sync.sh`'s `RSYNC_EXCLUDES`
-array and verify Zone 2 is clean before proceeding to Zone 3.
+**Rule of thumb:** If it contains operator identity, real project data, session logs, or internal development artifacts that aren't part of the shipped tool, it should be excluded. When in doubt, add it to `sync.sh`'s `RSYNC_EXCLUDES` array and verify Zone 2 is clean before proceeding to Zone 3.
 
-**The most common leak vector:** internal artifacts hiding inside otherwise
-public-facing directories. Tracker data in a hidden folder is easy — the
-excludes catch it. But development logs in `docs/`, internal configs in
-`forge/`, or session notes in a tools directory slip through because the
-parent directory is meant to ship. After every sync, list Zone 2's directory
-tree and ask of each directory: "Does this contain ONLY what the public
-should see?" If a directory mixes public and internal content, either
-restructure it or add a finer-grained exclude pattern.
+**The most common leak vector:** internal artifacts hiding inside otherwise public-facing directories. Tracker data in a hidden folder is easy — the excludes catch it. But development logs in `docs/`, internal configs in `forge/`, or session notes in a tools directory slip through because the parent directory is meant to ship.
+
+> After every sync, list Zone 2's directory tree and ask of each directory: "Does this contain ONLY what the public should see?" If a directory mixes public and internal content, either restructure it or add a finer-grained exclude pattern.
 
 ## 13. Multi-Machine Sync
 
