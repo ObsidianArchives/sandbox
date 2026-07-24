@@ -1,6 +1,6 @@
-# ⌘ Sandbox v1.0.0 — Three-Zone Workspace Protocol
+# ⌘ Sandbox v1.1.0 — Three-Zone Workspace Protocol
 
-> **v1.0.0** · shipped 2026-07-19 · [MIT](LICENSE) · [github.com/ObsidianArchives/sandbox-protocol](https://github.com/ObsidianArchives/sandbox-protocol)
+> **v1.1.0** · shipped 2026-07-24 · [MIT](LICENSE) · [github.com/ObsidianArchives/Sandbox](https://github.com/ObsidianArchives/Sandbox)
 
 ```
 Build in internal. Stage to sandbox. Ship from live.

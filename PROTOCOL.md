@@ -296,7 +296,7 @@ Sandbox organizes WHERE. LOOM tracks WHAT. Together:
 - Sandbox `index.json` has a `loom_id` field pointing to LOOM's `master_loom.json` project entry.
 - LOOM items can reference sandbox paths via `file_path`.
 - Projects registered in Sandbox MUST also be registered in LOOM (and vice versa).
-- The sandbox instance itself is LOOM-tracked (`sandbox-protocol` project).
+- The sandbox instance itself is LOOM-tracked (`sandbox` project).
 
 ## 9. Relationship to arca
 

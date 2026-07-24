@@ -37,7 +37,7 @@ usage() {
 Usage: ./sync.sh <project> [FLAGS]
 
 Projects are matched by Zone 1 directory name (without path).
-Example: ./sync.sh sandbox-protocol-internal --all
+Example: ./sync.sh sandbox-internal --all
 
 FLAGS:
   --zone1-to-2    Internal → Sandbox only (sync + commit)

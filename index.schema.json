@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/ObsidianArchives/sandbox-protocol/index.schema.json",
+  "$id": "https://github.com/ObsidianArchives/Sandbox/index.schema.json",
   "title": "Sandbox Index Manifest",
   "description": "Schema for Sandbox protocol index.json — tracks all tools, projects, and content repos across three zones.",
   "type": "object",

@@ -26,7 +26,7 @@ cd ../../..  # LOOM root
 python3 forge/tools/render.py --input examples/minimal-sandbox/Internal_SandBox/hello-project --header
 
 # Sync through sandbox zones
-cd sandbox-protocol
+cd sandbox
 ./scripts/sync.sh hello-project --zone1-to-2
 
 # Run this project's own tooling

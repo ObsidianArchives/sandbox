@@ -19,7 +19,7 @@
 ### Pipeline
 - Internal → git_sandbox (fresh orphan, no .loom/ leakage)
 - git_sandbox → git_live (clean copy)
-- git_live → GitHub (ObsidianArchives/sandbox-protocol)
+- git_live → GitHub (ObsidianArchives/Sandbox)
 - Tagged: v1.0.0
 
 ### Discovered During Release

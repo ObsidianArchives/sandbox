@@ -43,7 +43,7 @@ KEY FILES:
   ~/Sandbox_v2/git_sandbox/            Clean copies (staging)
   ~/git_live/                          Public copies (production)
 
-SCRIPTS (in sandbox-protocol-internal/scripts/):
+SCRIPTS (in sandbox-internal/scripts/):
   sync.sh              rsync pipeline
   validate.py          manifest validation
   status.py            zone health dashboard
@@ -71,9 +71,9 @@ Three zones with unidirectional data flow:
 
 | Zone | Convention | Example |
 |------|-----------|---------|
-| Zone 1 | `<project>-internal/` or `<Project_Name>/` | `sandbox-protocol-internal`, `Project_Apollon` |
-| Zone 2 | `<project>/` or `<project>_git/` | `sandbox-protocol`, `loom_git` |
-| Zone 3 | `<project>/` | `sandbox-protocol`, `loom` |
+| Zone 1 | `<project>-internal/` or `<Project_Name>/` | `sandbox-internal`, `Project_Apollon` |
+| Zone 2 | `<project>/` or `<project>_git/` | `sandbox`, `loom_git` |
+| Zone 3 | `<project>/` | `sandbox`, `loom` |
 
 ## Commands
 
