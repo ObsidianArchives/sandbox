@@ -37,10 +37,10 @@ FLOW: Internal → (rsync) → Sandbox → (rsync) → Live → (git push) → G
         NEVER REVERSE. Zone 1 is always source of truth.
 
 KEY FILES:
-  ~/Sandbox_v2/index.json              Manifest — single source of truth
-  ~/Sandbox_v2/index.schema.json       JSON Schema for manifest validation
-  ~/Sandbox_v2/Internal_SandBox/       Where all projects live (dev)
-  ~/Sandbox_v2/git_sandbox/            Clean copies (staging)
+  ~/Sandbox/index.json              Manifest — single source of truth
+  ~/Sandbox/index.schema.json       JSON Schema for manifest validation
+  ~/Sandbox/Internal_SandBox/       Where all projects live (dev)
+  ~/Sandbox/git_sandbox/            Clean copies (staging)
   ~/git_live/                          Public copies (production)
 
 SCRIPTS (in sandbox-internal/scripts/):
