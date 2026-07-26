@@ -169,6 +169,16 @@ def main():
     if args["with_loom"]:
         loom_file = create_loom_skeleton(proj_dir, args["name"], args["type"])
         print(f"{GREEN}✓{NC} .loom/ skeleton created at {loom_file}")
+        # Git init if not already a repo
+        git_dir = proj_dir / ".git"
+        if not git_dir.exists():
+            try:
+                subprocess.run(["git", "-C", str(proj_dir), "init"], check=True, capture_output=True)
+                subprocess.run(["git", "-C", str(proj_dir), "add", "-A"], check=True, capture_output=True)
+                subprocess.run(["git", "-C", str(proj_dir), "commit", "-m", f"⌘ Sandbox init · {args['name']}"], check=True, capture_output=True)
+                print(f"{GREEN}✓{NC} Git repo initialized")
+            except subprocess.CalledProcessError as e:
+                print(f"{YELLOW}⚠{NC} Git init failed: {e.stderr.decode() if e.stderr else e}")
 
     print(f"\nNext: sync.sh {args['path']} --all")
 
