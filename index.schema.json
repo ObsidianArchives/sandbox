@@ -8,7 +8,7 @@
   "properties": {
     "sandbox": {
       "type": "string",
-      "description": "Instance name (e.g. 'Sandbox_v2')"
+      "description": "Instance name (e.g. 'Sandbox')"
     },
     "sigil": {
       "type": "string",
@@ -17,6 +17,10 @@
     "version": {
       "type": "string",
       "description": "Schema version (v1 or v2)"
+    },
+    "protocol_version": {
+      "type": "string",
+      "description": "Sandbox protocol version (semver, e.g. '1.2.0'). Used by upgrade.sh for incremental migrations."
     },
     "created": {
       "type": "string",

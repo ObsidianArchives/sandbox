@@ -1,4 +1,4 @@
-# ⌘ Sandbox Protocol Specification v1.1.0
+# ⌘ Sandbox Protocol Specification v1.2.0
 
 ## 1. Overview
 
@@ -12,6 +12,8 @@ Sandbox is a three-zone workspace protocol. It provides a structured filesystem 
 ZONE 1: Internal_SandBox/    Working copies · full data · free commits
 ZONE 2: git_sandbox/         Clean deploy copies · tagged versions · gitignored files excluded
 ZONE 3: ~/git_live/          Public-facing repos · GitHub remotes · tagged releases
+
+DROPS:  drops/                Inbound artifact staging (root-level, Z1 only)
 ```
 
 ### Zone 1 — Internal_SandBox
@@ -53,6 +55,16 @@ git log --all --full-history -- .loom/
 **Prevention:** Always exclude `.loom/` in the initial zone setup. Never commit it
 to zone 2 or 3. The rsync exclude is a belt; the git history is the suspenders.
 Both must be correct.
+
+### drops/ — Inbound Artifact Staging
+
+- **Purpose:** Receive external artifacts into the sandbox ecosystem. Files downloaded from the internet, exported from other sessions, or transferred from the host filesystem land here.
+- **Location:** `~/Sandbox/drops/` — root level, sibling to `Internal_SandBox/`. NOT inside any zone.
+- **Zone:** Z1 only. Never synced to Z2 or Z3. Invisible to sync.sh (operates on `Internal_SandBox/<project>/` paths, not root-level siblings).
+- **Manifest:** `catalog.json` tracks every artifact at per-file granularity. Complements `index.json` (per-project) and `master_loom.json` (cross-project health). See `catalog.schema.json` for the formal schema.
+- **Lifecycle:** `acquired → assessed → curated | shelved | released → vaulted`. Artifacts are catalogued, hazard-assessed, and eventually curated into target projects or released.
+- **Subdirectories:** `images/` and `music/` for bulk media (tracked in aggregate by `cabinets{}`). `objects/` for content-addressed immutable archive (files named by sha256).
+- **Git:** Not a repository. Backed by arca vault.
 
 ### Zone 3 — git_live
 
@@ -337,7 +349,7 @@ Creates a new sandbox from nothing. One command.
 ./sandbox-init.sh [--name <name>] [--path <path>]
 ```
 
-Creates `Internal_SandBox/`, `git_sandbox/`, `tools/` directories and writes a valid `index.json` skeleton. Copies `index.schema.json` if accessible. Validates the skeleton on creation.
+Creates `Internal_SandBox/`, `git_sandbox/`, `drops/`, `tools/` directories and writes a valid `index.json` skeleton plus `drops/catalog.json` bootstrap. Copies `index.schema.json` if accessible. Validates the skeleton on creation.
 
 ### 11.2 sandbox-register.py — Project Registration
 
@@ -387,7 +399,27 @@ Validates `index.json` against `index.schema.json` with optional filesystem chec
 `--check-tags` verifies git tag consistency across Zone 2 and Zone 3.
 Exit code 1 on schema errors. Warnings don't block.
 
-### 11.6 CLI Contract (Planned — v1.2)
+### 11.6 render_catalog.py — Drops Catalog Renderer
+
+Renders `drops/catalog.json` → human-readable `CATALOG.md` table.
+
+```bash
+./render_catalog.py
+```
+
+Output includes hazard badges (🟢 trivial → ⚫ critical), status marks, and cabinet stats. Follows the LOOM render.py → KANBAN.md pattern.
+
+### 11.7 upgrade.sh — Version-Aware Migrations
+
+Upgrades existing sandbox instances to the current protocol version. Reads `protocol_version` from `index.json`, applies only missing migrations.
+
+```bash
+./upgrade.sh [--dry-run]
+```
+
+Idempotent. Safe to run on already-upgraded instances. Current migrations: v1.1.0→v1.2.0 creates `drops/` directory + `catalog.json` skeleton.
+
+### 11.8 CLI Contract (Planned — v1.3)
 
 These scripts are designed to be wrapped by a unified `sandbox` CLI in a future version:
 
@@ -445,8 +477,8 @@ Sandbox lives on one machine by default. When working across multiple machines (
 
 ```bash
 # On secondary machine, pull from primary:
-rsync -av --delete primary-machine:~/Sandbox_v2/Internal_SandBox/ ~/Sandbox_v2/Internal_SandBox/
-rsync -av primary-machine:~/Sandbox_v2/index.json ~/Sandbox_v2/index.json
+rsync -av --delete primary-machine:~/Sandbox/Internal_SandBox/ ~/Sandbox/Internal_SandBox/
+rsync -av primary-machine:~/Sandbox/index.json ~/Sandbox/index.json
 ```
 
 Zone 2 and Zone 3 are derived — they don't need syncing. Rebuild them on the secondary by running `sync.sh` after the mirror.

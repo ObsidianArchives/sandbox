@@ -1,4 +1,4 @@
-# ⌘ Sandbox Quickstart
+# ⌘ Sandbox Quickstart v1.2.0
 
 Get a three-zone workspace running in under a minute.
 
@@ -8,12 +8,15 @@ Get a three-zone workspace running in under a minute.
 ./sandbox-init.sh
 ```
 
-This creates `~/Sandbox/` with three empty zones and a valid manifest.
+This creates `~/Sandbox/` with three zones, a valid manifest, and a `drops/` directory for inbound artifacts.
 
-To also prepare the public-facing Zone 3 directory:
-```bash
-./sandbox-init.sh --with-live
-```
+The script creates:
+- `Internal_SandBox/` — Zone 1 (working copies)
+- `git_sandbox/` — Zone 2 (deploy copies)
+- `drops/` — inbound artifact staging with `catalog.json`
+- `tools/` — registered binary applications
+- `index.json` — v2 manifest skeleton
+- Zone 3 at `~/git_live/` automatically
 
 ### Configuration
 
@@ -30,6 +33,19 @@ If unset, scripts default to `~/Sandbox/` and `~/git_live/` respectively.
 > tracked by [🝪 LOOM](https://github.com/ObsidianArchives/LOOM). These stay in Zone 1 —
 > they're automatically excluded when syncing to Zone 2+3. Never gitignore `.loom/` in Zone 1.
 > See [examples/minimal-sandbox/](examples/minimal-sandbox/) for a working demo.
+
+### Drops: Inbound Artifact Staging
+
+The sandbox includes a `drops/` directory at the root level for inbound artifacts — files downloaded from the internet, exported dashboards, reference materials. These are catalogued in `drops/catalog.json` and can be curated into projects.
+
+```bash
+# View catalog
+cat ~/Sandbox/drops/catalog.json
+
+# Render human-readable view
+python3 sandbox-internal/scripts/render_catalog.py
+cat ~/Sandbox/drops/CATALOG.md
+```
 
 ## 2. Register Your Project
 
@@ -136,6 +152,20 @@ cd ~/git_live/my-project && git add -A && git commit -m "sync: my-project"
 ```
 
 </details>
+
+---
+
+## Upgrading from v1.1.0
+
+If your sandbox was created with an older version of the protocol (before drops/ existed), upgrade it:
+
+```bash
+./scripts/upgrade.sh
+```
+
+This creates `drops/{images,music,objects}` + `catalog.json` skeleton. Safe to run multiple times — it detects your current version and only applies missing migrations.
+
+Use `--dry-run` to preview changes without applying them.
 
 ---
 

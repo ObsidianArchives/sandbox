@@ -1,0 +1,489 @@
+{
+  "catalog": "Sandbox",
+  "version": "1.0.0",
+  "curator": "operator",
+  "created": "2026-07-29T00:00:00Z",
+  "updated": "2026-07-29T00:00:00Z",
+  "total_artifacts": 3,
+  "cabinets": {
+    "images": {
+      "path": "images/",
+      "count": 2,
+      "formats": {
+        "png": 1,
+        "svg": 1
+      }
+    },
+    "music": {
+      "path": "music/",
+      "count": 0,
+      "formats": {}
+    }
+  },
+  "artifacts": [
+    {
+      "id": "artifact-001",
+      "filename": "loom-dashboard.html",
+      "kind": "html_artifact",
+
+      "excavation": {
+        "site": "windows_filesystem",
+        "origin_url": null,
+        "referrer_url": null,
+        "method": "browser_download",
+        "extracted_from": null,
+        "original_filename": "loom-dashboard.html",
+        "retrieved_by": "operator",
+        "retrieval_session": "2026-07-29",
+        "stratum": {
+          "host": "windows",
+          "user_dir": null,
+          "zone_marker": {
+            "present": true,
+            "zone_id": 3,
+            "zone_name": "Internet",
+            "referrer_url": null
+          }
+        },
+        "note": "Exported LOOM dashboard from prior session"
+      },
+
+      "provenance": {
+        "chain": [],
+        "authenticity": "self_generated",
+        "prior_custody": [],
+        "transformations": [],
+        "signatures": []
+      },
+
+      "physique": {
+        "sha256": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+        "bytes": 60324,
+        "lines": 1233,
+        "mime_type": "text/html",
+        "encoding": "UTF-8",
+        "line_endings": "LF",
+        "is_binary": false,
+        "is_text": true,
+        "renders_in": "browser",
+        "standalone": true,
+        "requires": []
+      },
+
+      "essence": {
+        "domain": "loom",
+        "tags": ["dashboard", "html", "weave", "visualization"],
+        "substance": "rendered_artifact",
+        "summary": "Interactive LOOM weave dashboard with dark Catppuccin theme, sidebar navigation, and project overview panels.",
+        "ai_summary": null,
+        "ai_keywords": [],
+        "embedding": {
+          "indexed": false,
+          "model": null
+        }
+      },
+
+      "hazard": {
+        "level": "trivial",
+        "vectors": ["internet_origin"],
+        "zone_marker": "internet",
+        "carries": {
+          "executable_code": false,
+          "remote_fetches": false,
+          "pii_paths": false,
+          "secrets": "clean",
+          "binary_blob": false,
+          "obfuscated": false
+        },
+        "scanned_at": "2026-07-29T00:00:00Z",
+        "signature": "unsigned",
+        "notes": "Self-generated HTML. No scripts. Safe to ship to Zone 3."
+      },
+
+      "condition": {
+        "completeness": "intact",
+        "validity": "valid",
+        "renders": "renders",
+        "corruption": "none",
+        "reviewed_by": "operator",
+        "reviewed_at": "2026-07-29T00:00:00Z"
+      },
+
+      "rights": {
+        "ownership": "self_generated",
+        "license": "MIT",
+        "attribution": null,
+        "can_ship_to_z3": true,
+        "contains_third_party": false,
+        "restrictions": [],
+        "notes": "Safe for public GitHub."
+      },
+
+      "stratigraphy": {
+        "batch_id": null,
+        "batch_position": null,
+        "parent_artifact": null,
+        "sibling_artifacts": [],
+        "supersedes": null,
+        "superseded_by": null,
+        "duplicate_of": null
+      },
+
+      "curation": {
+        "target_project_id": "loom-protocol",
+        "target_path": "loom_internal",
+        "suggested_location": "forge/anvil/_scaffolds/dashboard.html",
+        "status": "targeted"
+      },
+
+      "loom_bridge": {
+        "spawn_item": true,
+        "loom_item_id": "loom-epic-042-001",
+        "epic_id": "loom-epic-042"
+      },
+
+      "catalog_status": {
+        "state": "assessed",
+        "acquired": "2026-07-29T00:00:00Z",
+        "assessed": "2026-07-29T01:00:00Z",
+        "curated": null,
+        "vaulted": null,
+        "released": null
+      },
+
+      "stewardship": {
+        "auto_clean": false,
+        "ttl_days": null,
+        "retain_after_curation": false,
+        "sticky": false
+      },
+
+      "citations": {
+        "related_artifacts": [],
+        "loom_items": ["loom-epic-042-001"],
+        "blog_posts": [],
+        "desk_papers": [],
+        "kanban_mentions": ["KANBAN.md: LOOM dashboard artifact evaluated"],
+        "git_commits": []
+      },
+
+      "vault": {
+        "backed_up": true,
+        "arca_tag": "drops-2026-07-29"
+      },
+
+      "field_notes": "First artifact catalogued. LOOM dashboard. Evaluated and targeted for forge integration. LOOM item spawned for adoption."
+    },
+    {
+      "id": "artifact-002",
+      "filename": "paper-arxiv-2301.00001.pdf",
+      "kind": "pdf",
+
+      "excavation": {
+        "site": "linux_filesystem",
+        "origin_url": "https://arxiv.org/pdf/2301.00001.pdf",
+        "referrer_url": null,
+        "method": "curl_fetch",
+        "extracted_from": null,
+        "original_filename": "2301.00001.pdf",
+        "retrieved_by": "operator",
+        "retrieval_session": "2026-07-28",
+        "stratum": {
+          "host": "linux",
+          "user_dir": null,
+          "zone_marker": {
+            "present": false,
+            "zone_id": null,
+            "zone_name": null,
+            "referrer_url": null
+          }
+        },
+        "note": "Downloaded via curl from arXiv"
+      },
+
+      "provenance": {
+        "chain": [
+          {"step": "published", "by": "arXiv", "when": "2023-01-01"},
+          {"step": "fetched", "by": "operator", "when": "2026-07-28"}
+        ],
+        "authenticity": "third_party",
+        "prior_custody": ["arXiv"],
+        "transformations": [],
+        "signatures": []
+      },
+
+      "physique": {
+        "sha256": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+        "bytes": 2450000,
+        "lines": null,
+        "mime_type": "application/pdf",
+        "encoding": null,
+        "line_endings": null,
+        "is_binary": true,
+        "is_text": false,
+        "renders_in": "pdf_viewer",
+        "standalone": true,
+        "requires": ["pdf_viewer"]
+      },
+
+      "essence": {
+        "domain": "research",
+        "tags": ["arxiv", "pdf", "paper", "machine-learning"],
+        "substance": "reference_material",
+        "summary": "Example arXiv paper for demonstration. Represents the typical research-paper artifact pattern.",
+        "ai_summary": null,
+        "ai_keywords": [],
+        "embedding": {
+          "indexed": false,
+          "model": null
+        }
+      },
+
+      "hazard": {
+        "level": "medium",
+        "vectors": ["internet_origin", "third_party_content"],
+        "zone_marker": null,
+        "carries": {
+          "executable_code": false,
+          "remote_fetches": false,
+          "pii_paths": false,
+          "secrets": "unscanned",
+          "binary_blob": true,
+          "obfuscated": false
+        },
+        "scanned_at": null,
+        "signature": "unverified",
+        "notes": "Third-party PDF. Medium hazard due to external origin + unscanned content. Binary blob by nature (PDF). Review before shipping."
+      },
+
+      "condition": {
+        "completeness": "intact",
+        "validity": "unverified",
+        "renders": "unverified",
+        "corruption": "none",
+        "reviewed_by": null,
+        "reviewed_at": null
+      },
+
+      "rights": {
+        "ownership": "third_party",
+        "license": "arxiv_non_exclusive",
+        "attribution": "Author et al., arXiv:2301.00001",
+        "can_ship_to_z3": false,
+        "contains_third_party": true,
+        "restrictions": ["do_not_redistribute"],
+        "notes": "Third-party content. Do not ship to Zone 3. For internal reference only."
+      },
+
+      "stratigraphy": {
+        "batch_id": "batch-001",
+        "batch_position": 2,
+        "parent_artifact": null,
+        "sibling_artifacts": ["artifact-003"],
+        "supersedes": null,
+        "superseded_by": null,
+        "duplicate_of": null
+      },
+
+      "curation": {
+        "target_project_id": null,
+        "target_path": null,
+        "suggested_location": null,
+        "status": "undecided"
+      },
+
+      "loom_bridge": {
+        "spawn_item": false,
+        "loom_item_id": null,
+        "epic_id": null
+      },
+
+      "catalog_status": {
+        "state": "acquired",
+        "acquired": "2026-07-28T12:00:00Z",
+        "assessed": null,
+        "curated": null,
+        "vaulted": null,
+        "released": null
+      },
+
+      "stewardship": {
+        "auto_clean": false,
+        "ttl_days": 30,
+        "retain_after_curation": false,
+        "sticky": false
+      },
+
+      "citations": {
+        "related_artifacts": ["artifact-003"],
+        "loom_items": [],
+        "blog_posts": [],
+        "desk_papers": [],
+        "kanban_mentions": [],
+        "git_commits": []
+      },
+
+      "vault": {
+        "backed_up": false,
+        "arca_tag": null
+      },
+
+      "field_notes": "Example PDF artifact. Demonstrates third-party content with medium hazard and Z3 shipping restriction. Part of batch-001 with artifact-003."
+    },
+    {
+      "id": "artifact-003",
+      "filename": "architecture-diagram.svg",
+      "kind": "image",
+
+      "excavation": {
+        "site": "linux_filesystem",
+        "origin_url": null,
+        "referrer_url": null,
+        "method": "direct_copy",
+        "extracted_from": null,
+        "original_filename": "architecture-diagram.svg",
+        "retrieved_by": "operator",
+        "retrieval_session": "2026-07-28",
+        "stratum": {
+          "host": "linux",
+          "user_dir": null,
+          "zone_marker": {
+            "present": false,
+            "zone_id": null,
+            "zone_name": null,
+            "referrer_url": null
+          }
+        },
+        "note": "Self-generated architecture diagram copied from desk project"
+      },
+
+      "provenance": {
+        "chain": [],
+        "authenticity": "self_generated",
+        "prior_custody": [],
+        "transformations": [
+          {"what": "exported from Excalidraw", "when": "2026-07-28", "by": "operator"}
+        ],
+        "signatures": []
+      },
+
+      "physique": {
+        "sha256": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+        "bytes": 48000,
+        "lines": 320,
+        "mime_type": "image/svg+xml",
+        "encoding": "UTF-8",
+        "line_endings": "LF",
+        "is_binary": false,
+        "is_text": true,
+        "renders_in": "browser",
+        "standalone": true,
+        "requires": []
+      },
+
+      "essence": {
+        "domain": "sandbox",
+        "tags": ["architecture", "diagram", "svg", "documentation"],
+        "substance": "media",
+        "summary": "Sandbox Protocol three-zone architecture diagram showing Z1→Z2→Z3 flow with drops/ and arca/.",
+        "ai_summary": null,
+        "ai_keywords": [],
+        "embedding": {
+          "indexed": false,
+          "model": null
+        }
+      },
+
+      "hazard": {
+        "level": "low",
+        "vectors": [],
+        "zone_marker": null,
+        "carries": {
+          "executable_code": false,
+          "remote_fetches": false,
+          "pii_paths": false,
+          "secrets": "clean",
+          "binary_blob": false,
+          "obfuscated": false
+        },
+        "scanned_at": "2026-07-28T12:00:00Z",
+        "signature": "unsigned",
+        "notes": "Self-generated SVG. Low hazard. Safe to ship."
+      },
+
+      "condition": {
+        "completeness": "intact",
+        "validity": "valid",
+        "renders": "renders",
+        "corruption": "none",
+        "reviewed_by": "operator",
+        "reviewed_at": "2026-07-28T12:00:00Z"
+      },
+
+      "rights": {
+        "ownership": "self_generated",
+        "license": "MIT",
+        "attribution": null,
+        "can_ship_to_z3": true,
+        "contains_third_party": false,
+        "restrictions": [],
+        "notes": "Safe for public GitHub. Architecture diagram for documentation."
+      },
+
+      "stratigraphy": {
+        "batch_id": "batch-001",
+        "batch_position": 3,
+        "parent_artifact": null,
+        "sibling_artifacts": ["artifact-002"],
+        "supersedes": null,
+        "superseded_by": null,
+        "duplicate_of": null
+      },
+
+      "curation": {
+        "target_project_id": "sandbox-protocol",
+        "target_path": "sandbox-internal",
+        "suggested_location": "examples/architecture-diagram.svg",
+        "status": "curated"
+      },
+
+      "loom_bridge": {
+        "spawn_item": false,
+        "loom_item_id": null,
+        "epic_id": null
+      },
+
+      "catalog_status": {
+        "state": "curated",
+        "acquired": "2026-07-28T11:00:00Z",
+        "assessed": "2026-07-28T12:00:00Z",
+        "curated": "2026-07-28T12:30:00Z",
+        "vaulted": null,
+        "released": null
+      },
+
+      "stewardship": {
+        "auto_clean": false,
+        "ttl_days": null,
+        "retain_after_curation": true,
+        "sticky": false
+      },
+
+      "citations": {
+        "related_artifacts": ["artifact-002"],
+        "loom_items": [],
+        "blog_posts": [],
+        "desk_papers": [],
+        "kanban_mentions": [],
+        "git_commits": ["abc1234"]
+      },
+
+      "vault": {
+        "backed_up": true,
+        "arca_tag": "drops-2026-07-28"
+      },
+
+      "field_notes": "Curated into sandbox-protocol examples. Demonstrates the full acquired→assessed→curated lifecycle. Retained in drops/ after curation for archival."
+    }
+  ]
+}

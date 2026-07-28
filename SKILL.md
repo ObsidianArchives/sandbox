@@ -1,11 +1,10 @@
 ---
 name: sandbox
 description: "Operate the Sandbox three-zone workspace protocol — sync, validate, register, init, and check zone health."
-version: 1.0.0
+version: 1.2.0
 author: Hermes Agent × Mercury
 triggers:
   - sandbox
-  - sync
   - zone
   - rsync
   - deploy
@@ -18,10 +17,14 @@ triggers:
   - sandbox-register
   - status.py
   - validate.py
-  - drift
   - three-zone
   - content_repos
   - tools registry
+  - drops
+  - catalog.json
+  - catalog
+  - artifact
+  - upgrade
 ---
 
 # Sandbox Protocol · Hermes Operations Guide
@@ -42,6 +45,8 @@ KEY FILES:
   ~/Sandbox/Internal_SandBox/       Where all projects live (dev)
   ~/Sandbox/git_sandbox/            Clean copies (staging)
   ~/git_live/                          Public copies (production)
+  ~/Sandbox/drops/                     Inbound artifact staging
+  ~/Sandbox/drops/catalog.json         Artifact manifest (per-file granularity)
 
 SCRIPTS (in sandbox-internal/scripts/):
   sync.sh              rsync pipeline
@@ -49,6 +54,8 @@ SCRIPTS (in sandbox-internal/scripts/):
   status.py            zone health dashboard
   sandbox-init.sh      bootstrap new sandbox
   sandbox-register.py  add project to manifest
+  render_catalog.py    catalog.json → CATALOG.md renderer
+  upgrade.sh           version-aware incremental migrations
 ```
 
 ## Zone Architecture
@@ -136,6 +143,67 @@ python3 sandbox-register.py --name <name> --type <tool|os|docs> --path <dir>
 ```
 
 Auto-detects: git commit, file count, size. Validates: path exists, not duplicate.
+
+### render_catalog.py — Drops Catalog Renderer
+
+```bash
+python3 render_catalog.py
+```
+
+Reads `~/Sandbox/drops/catalog.json`, writes `~/Sandbox/drops/CATALOG.md`. Human-readable table with hazard badges (🟢 trivial → ⚫ critical), status marks, and cabinet stats. Always run after modifying catalog.json.
+
+### upgrade.sh — Version-Aware Migrations
+
+```bash
+./upgrade.sh [--dry-run]
+```
+
+Upgrades existing sandbox instances to current protocol version. Reads `protocol_version` from `index.json`, applies only missing migrations. Idempotent — safe to run on already-upgraded instances. Use `--dry-run` to preview.
+
+## Working with drops/
+
+drops/ is root-level infrastructure at `~/Sandbox/drops/`. It is NEVER inside any project. It does NOT sync to Zone 2 or Zone 3. It is instance-specific.
+
+### Registering a New Artifact
+
+When a file is dropped into `drops/`:
+
+1. Compute sha256: `sha256sum ~/Sandbox/drops/<file>`
+2. Check for Windows Zone.Identifier ADS: `cat ~/Sandbox/drops/<file>:Zone.Identifier`
+3. Add entry to `drops/catalog.json` with all populated fields
+4. Copy to `drops/objects/<sha256>/` for content-addressed archive
+5. Run `python3 scripts/render_catalog.py` to update CATALOG.md
+
+### Assessing Hazard
+
+When triaging an artifact:
+
+1. Check `excavation.stratum.zone_marker` — ZoneId=3 (Internet) → add "internet_origin" to hazard vectors
+2. Grep for PII: `grep -r '/home/' drops/<file>` (for text files)
+3. Grep for secrets: `grep -E 'BEGIN.*PRIVATE KEY|sk-[a-zA-Z0-9]{20,}' drops/<file>`
+4. Set `hazard.level` based on findings: trivial → low → medium → high → critical
+5. Update `catalog_status.state` to "assessed"
+
+### Curating into a Project
+
+When an artifact is ready to move to a project:
+
+1. Set `curation.target_project_id` to match `index.json` project ID
+2. Set `curation.status` to "targeted"
+3. Copy/move file from `drops/` to target project path
+4. If `loom_bridge.spawn_item` is true, create LOOM item in target project
+5. Update `catalog_status.state` to "curated"
+6. Run `python3 scripts/render_catalog.py`
+
+### Upgrading Pre-1.2.0 Instances
+
+When a user's sandbox was created before drops/ existed:
+
+```bash
+./scripts/upgrade.sh
+```
+
+This creates `drops/{images,music,objects}` + `catalog.json` skeleton. Idempotent — detects `protocol_version` in `index.json` and only applies missing migrations. Use `--dry-run` first to preview.
 
 ## Rules & Discipline
 

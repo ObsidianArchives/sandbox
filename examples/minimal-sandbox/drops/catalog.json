@@ -1,0 +1,21 @@
+{
+  "catalog": "Sandbox",
+  "version": "1.0.0",
+  "curator": "operator",
+  "created": "2026-07-29T00:00:00Z",
+  "updated": "2026-07-29T00:00:00Z",
+  "total_artifacts": 0,
+  "cabinets": {
+    "images": {
+      "path": "images/",
+      "count": 0,
+      "formats": {}
+    },
+    "music": {
+      "path": "music/",
+      "count": 0,
+      "formats": {}
+    }
+  },
+  "artifacts": []
+}

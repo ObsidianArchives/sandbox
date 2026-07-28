@@ -18,16 +18,19 @@ LIVE_ROOT="${LIVE_ROOT:-$HOME/git_live}"
 RSYNC_EXCLUDES=(
     --exclude '.git'
     --exclude '.loom'
+    --exclude '.hermes'
     --exclude '.icp'
     --exclude 'node_modules'
     --exclude 'drafts'
     --exclude '.archive'
-    --exclude 'references'
     --exclude '__pycache__'
     --exclude '*.pyc'
     --exclude '.env'
     --exclude '.env.*'
     --exclude '.DS_Store'
+    --exclude 'master_loom.json'
+    --exclude 'dossiers'
+    --exclude 'archives'
 )
 
 usage() {

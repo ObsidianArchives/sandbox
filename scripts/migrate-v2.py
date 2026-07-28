@@ -14,7 +14,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox_v2")))
+SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox")))
 INDEX_PATH = SAND_ROOT / "index.json"
 BACKUP_PATH = SAND_ROOT / "index.json.v1.bak"
 LIVE_ROOT = Path(os.environ.get("LIVE_ROOT", os.path.expanduser("~/git_live")))
@@ -177,7 +177,7 @@ def migrate(dry_run=False, force=False):
 
     # ── Build v2 manifest ──
     v2 = {
-        "sandbox": v1.get("sandbox", "Sandbox_v2"),
+        "sandbox": v1.get("sandbox", "Sandbox"),
         "sigil": v1.get("sigil", "⌘"),
         "version": "v2",
         "created": v1.get("created", datetime.now(timezone.utc).strftime("%Y-%m-%d")),

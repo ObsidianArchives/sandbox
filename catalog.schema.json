@@ -1,0 +1,271 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ObsidianArchives/Sandbox/catalog.schema.json",
+  "title": "Drops Catalog Manifest",
+  "description": "Schema for drops/catalog.json — tracks inbound artifacts at per-file granularity. Complements index.json (per-project) and master_loom.json (cross-project health).",
+  "type": "object",
+  "required": ["catalog", "version", "created", "updated", "artifacts"],
+  "properties": {
+    "catalog": {
+      "type": "string",
+      "description": "Sandbox instance name (e.g. 'Sandbox')"
+    },
+    "version": {
+      "type": "string",
+      "description": "Schema version (semver)"
+    },
+    "curator": {
+      "type": "string",
+      "description": "Operator identity"
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "total_artifacts": {
+      "type": "integer",
+      "description": "Computed total of artifacts[].length"
+    },
+    "cabinets": {
+      "type": "object",
+      "description": "Aggregate stats for bulk media directories",
+      "properties": {
+        "images": {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string"},
+            "count": {"type": "integer"},
+            "formats": {"type": "object"}
+          }
+        },
+        "music": {
+          "type": "object",
+          "properties": {
+            "path": {"type": "string"},
+            "count": {"type": "integer"},
+            "formats": {"type": "object"}
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "filename", "kind", "excavation", "physique", "essence", "hazard", "rights", "curation", "catalog_status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^artifact-\\d{3}$",
+            "description": "Zero-padded sequential ID"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Filename in drops/"
+          },
+          "kind": {
+            "enum": ["html_artifact", "pdf", "image", "audio", "document", "archive", "script", "binary", "unknown"]
+          },
+          "excavation": {
+            "type": "object",
+            "required": ["site", "method", "retrieved_by", "retrieval_session"],
+            "properties": {
+              "site": {"type": "string"},
+              "origin_url": {"type": ["string", "null"], "format": "uri"},
+              "referrer_url": {"type": ["string", "null"], "format": "uri"},
+              "method": {"enum": ["browser_download", "direct_copy", "curl_fetch", "git_clone", "external_media", "message_attachment", "unknown"]},
+              "extracted_from": {"type": ["string", "null"]},
+              "original_filename": {"type": "string"},
+              "retrieved_by": {"type": "string"},
+              "retrieval_session": {"type": "string"},
+              "stratum": {
+                "type": "object",
+                "properties": {
+                  "host": {"type": "string"},
+                  "user_dir": {"type": ["string", "null"]},
+                  "zone_marker": {
+                    "type": "object",
+                    "properties": {
+                      "present": {"type": "boolean"},
+                      "zone_id": {"type": ["integer", "null"]},
+                      "zone_name": {"type": ["string", "null"]},
+                      "referrer_url": {"type": ["string", "null"]}
+                    }
+                  }
+                }
+              },
+              "note": {"type": "string"}
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "chain": {"type": "array"},
+              "authenticity": {"enum": ["self_generated", "third_party", "unknown"]},
+              "prior_custody": {"type": "array"},
+              "transformations": {"type": "array"},
+              "signatures": {"type": "array"}
+            }
+          },
+          "physique": {
+            "type": "object",
+            "required": ["sha256", "bytes", "mime_type"],
+            "properties": {
+              "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+              "bytes": {"type": "integer"},
+              "lines": {"type": "integer"},
+              "mime_type": {"type": "string"},
+              "encoding": {"type": "string"},
+              "line_endings": {"enum": ["LF", "CRLF", "CR"]},
+              "is_binary": {"type": "boolean"},
+              "is_text": {"type": "boolean"},
+              "renders_in": {"type": "string"},
+              "standalone": {"type": "boolean"},
+              "requires": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "essence": {
+            "type": "object",
+            "required": ["domain", "tags", "substance"],
+            "properties": {
+              "domain": {"type": "string"},
+              "tags": {"type": "array", "items": {"type": "string"}},
+              "substance": {"enum": ["source_code", "rendered_artifact", "raw_data", "media", "reference_material", "unknown"]},
+              "summary": {"type": ["string", "null"]},
+              "ai_summary": {"type": ["string", "null"]},
+              "ai_keywords": {"type": "array", "items": {"type": "string"}},
+              "embedding": {
+                "type": "object",
+                "properties": {
+                  "indexed": {"type": "boolean"},
+                  "model": {"type": ["string", "null"]}
+                }
+              }
+            }
+          },
+          "hazard": {
+            "type": "object",
+            "required": ["level", "vectors"],
+            "properties": {
+              "level": {"enum": ["trivial", "low", "medium", "high", "critical", "unscanned"]},
+              "vectors": {"type": "array", "items": {"type": "string"}},
+              "zone_marker": {"type": ["string", "null"]},
+              "carries": {
+                "type": "object",
+                "properties": {
+                  "executable_code": {"type": "boolean"},
+                  "remote_fetches": {"type": "boolean"},
+                  "pii_paths": {"type": "boolean"},
+                  "secrets": {"enum": ["unscanned", "clean", "flagged", "reviewed"]},
+                  "binary_blob": {"type": "boolean"},
+                  "obfuscated": {"type": "boolean"}
+                }
+              },
+              "scanned_at": {"type": ["string", "null"], "format": "date-time"},
+              "signature": {"enum": ["unverified", "verified", "unsigned"]},
+              "notes": {"type": "string"}
+            }
+          },
+          "condition": {
+            "type": "object",
+            "properties": {
+              "completeness": {"enum": ["intact", "truncated", "partial", "unknown"]},
+              "validity": {"enum": ["unverified", "valid", "invalid", "not_applicable"]},
+              "renders": {"enum": ["unverified", "renders", "broken", "not_applicable"]},
+              "corruption": {"enum": ["none", "suspected", "confirmed"]},
+              "reviewed_by": {"type": ["string", "null"]},
+              "reviewed_at": {"type": ["string", "null"], "format": "date-time"}
+            }
+          },
+          "rights": {
+            "type": "object",
+            "required": ["ownership", "can_ship_to_z3"],
+            "properties": {
+              "ownership": {"enum": ["self_generated", "third_party", "unknown"]},
+              "license": {"type": ["string", "null"]},
+              "attribution": {"type": ["string", "null"]},
+              "can_ship_to_z3": {"type": "boolean"},
+              "contains_third_party": {"type": "boolean"},
+              "restrictions": {"type": "array", "items": {"type": "string"}},
+              "notes": {"type": "string"}
+            }
+          },
+          "stratigraphy": {
+            "type": "object",
+            "properties": {
+              "batch_id": {"type": ["string", "null"]},
+              "batch_position": {"type": ["integer", "null"]},
+              "parent_artifact": {"type": ["string", "null"]},
+              "sibling_artifacts": {"type": "array", "items": {"type": "string"}},
+              "supersedes": {"type": ["string", "null"]},
+              "superseded_by": {"type": ["string", "null"]},
+              "duplicate_of": {"type": ["string", "null"]}
+            }
+          },
+          "curation": {
+            "type": "object",
+            "required": ["status"],
+            "properties": {
+              "target_project_id": {"type": ["string", "null"]},
+              "target_path": {"type": ["string", "null"]},
+              "suggested_location": {"type": ["string", "null"]},
+              "status": {"enum": ["undecided", "targeted", "curated", "rejected"]}
+            }
+          },
+          "loom_bridge": {
+            "type": "object",
+            "properties": {
+              "spawn_item": {"type": "boolean"},
+              "loom_item_id": {"type": ["string", "null"]},
+              "epic_id": {"type": ["string", "null"]}
+            }
+          },
+          "catalog_status": {
+            "type": "object",
+            "required": ["state", "acquired"],
+            "properties": {
+              "state": {"enum": ["acquired", "assessed", "curated", "shelved", "released", "vaulted"]},
+              "acquired": {"type": "string", "format": "date-time"},
+              "assessed": {"type": ["string", "null"], "format": "date-time"},
+              "curated": {"type": ["string", "null"], "format": "date-time"},
+              "vaulted": {"type": ["string", "null"], "format": "date-time"},
+              "released": {"type": ["string", "null"], "format": "date-time"}
+            }
+          },
+          "stewardship": {
+            "type": "object",
+            "properties": {
+              "auto_clean": {"type": "boolean"},
+              "ttl_days": {"type": ["integer", "null"]},
+              "retain_after_curation": {"type": "boolean"},
+              "sticky": {"type": "boolean"}
+            }
+          },
+          "citations": {
+            "type": "object",
+            "properties": {
+              "related_artifacts": {"type": "array", "items": {"type": "string"}},
+              "loom_items": {"type": "array", "items": {"type": "string"}},
+              "blog_posts": {"type": "array", "items": {"type": "string"}},
+              "desk_papers": {"type": "array", "items": {"type": "string"}},
+              "kanban_mentions": {"type": "array", "items": {"type": "string"}},
+              "git_commits": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "vault": {
+            "type": "object",
+            "properties": {
+              "backed_up": {"type": "boolean"},
+              "arca_tag": {"type": ["string", "null"]}
+            }
+          },
+          "field_notes": {"type": "string"}
+        }
+      }
+    }
+  }
+}

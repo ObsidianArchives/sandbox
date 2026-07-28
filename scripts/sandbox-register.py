@@ -13,7 +13,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
-SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox_v2")))
+SAND_ROOT = Path(os.environ.get("SAND_ROOT", os.path.expanduser("~/Sandbox")))
 INDEX_PATH = SAND_ROOT / "index.json"
 
 GREEN = "\033[0;32m"; YELLOW = "\033[1;33m"; RED = "\033[0;31m"; CYAN = "\033[0;36m"; NC = "\033[0m"
